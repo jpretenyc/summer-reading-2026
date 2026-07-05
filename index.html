@@ -14,6 +14,7 @@
   --red:#8C2B2E;         /* heritage barn red, muted */
   --gold:#B08D4F;        /* brass */
   --gold-soft:#d9c49a;
+  --ai:#5a3d8c;          /* violet — AI project */
   --parch:#F7F3EA;       /* parchment */
   --parch-2:#efe9db;
   --card:#FCFAF4;
@@ -102,6 +103,7 @@ header::before{ /* faint star field */
 .chip[aria-pressed="true"]{background:var(--navy);color:#fff;border-color:var(--navy)}
 .chip.red[aria-pressed="true"]{background:var(--red);border-color:var(--red)}
 .chip.gold[aria-pressed="true"]{background:var(--gold);border-color:var(--gold);color:#1a1508}
+.chip.ai[aria-pressed="true"]{background:var(--ai);border-color:var(--ai);color:#fff}
 
 /* ---------- Grid ---------- */
 .req{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--gold);
@@ -116,10 +118,12 @@ main{padding:26px 0 60px}
 .card:hover{transform:translateY(-2px);box-shadow:0 4px 8px rgba(10,31,61,.07),0 14px 30px rgba(10,31,61,.09)}
 .card.sacred{border-left-color:var(--gold);background:linear-gradient(180deg,#fdfbf4,#f9f4e8)}
 .card.america{border-left-color:var(--red)}
+.card.ai{border-left-color:var(--ai);background:linear-gradient(180deg,#faf7fd,#f3ecfa)}
 .card .cat{font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-soft);
   font-weight:600;margin-bottom:6px}
 .card.sacred .cat{color:var(--gold)}
 .card.america .cat{color:var(--red)}
+.card.ai .cat{color:var(--ai)}
 .bktitle{font-family:"Libre Caslon Text",serif;font-weight:700;font-size:17px;line-height:1.2;
   margin:0 0 3px;color:var(--ink)}
 .author{font-size:13px;color:var(--ink-soft);margin:0 0 12px}
@@ -130,6 +134,7 @@ main{padding:26px 0 60px}
 .b-credit{background:var(--navy);color:#fff}
 .card.sacred .b-credit{background:var(--gold);color:#1a1508}
 .card.america .b-credit{background:var(--red);color:#fff}
+.card.ai .b-credit{background:var(--ai);color:#fff}
 .b-pages{background:#eeeadd;color:var(--ink-soft)}
 .b-age{background:#e7edf5;color:var(--navy)}
 .b-audio{background:#e8f0e8;color:#2f5233}
@@ -146,6 +151,7 @@ main{padding:26px 0 60px}
 .talks summary::before,.brief summary::before{content:"▸";font-size:10px;transition:transform .15s}
 .talks[open] summary::before,.brief[open] summary::before{transform:rotate(90deg)}
 .card.sacred .talks summary{color:#7a5f24}
+.card.ai .brief summary,.card.ai .talks summary{color:var(--ai)}
 .brief h4{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);
   margin:12px 0 6px;font-weight:700}
 .brief ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:5px}
@@ -160,6 +166,7 @@ main{padding:26px 0 60px}
   font-weight:600;color:var(--navy);text-decoration:none;font-family:"Inter"}
 .buy:hover{color:var(--red);text-decoration:underline;text-underline-offset:2px}
 .card.sacred .buy{color:#7a5f24}.card.sacred .buy:hover{color:var(--red)}
+.card.ai .buy{color:var(--ai)}.card.ai .buy:hover{color:var(--red)}
 .rule-note{font-size:11.5px;color:var(--ink-soft);font-style:italic;font-family:"Libre Caslon Text",serif;
   margin-top:9px}
 
@@ -231,7 +238,7 @@ footer a{color:var(--gold-soft)}
 </div>
 
 <main class="wrap">
-  <div class="req" id="req">Complete <strong>5</strong> in all: <strong>4 books</strong> plus <strong>one AI Project</strong> (required — it counts as your 5th book). At least <strong>1</strong> from Church History &amp; Spiritual Upliftment and <strong>1</strong> from 250 Years of America; the rest from any section. Reach <strong>10 books</strong> and Prete children earn a <strong>$500</strong> bonus.</div>
+  <div class="req" id="req">Complete <strong>5</strong> in all: Read or listen to <strong>4 books</strong> plus complete <strong>one AI Project</strong> (required — it counts as your 5th book). At least <strong>1</strong> from Church History &amp; Spiritual Upliftment and <strong>1</strong> from 250 Years of America; the rest from any section. Reach <strong>10 books</strong> and Prete children earn a <strong>$500</strong> bonus.</div>
   <div class="grid" id="grid"></div>
   <div class="empty" id="empty" hidden>
     <h3>No books match those filters.</h3>
@@ -255,8 +262,8 @@ footer a{color:var(--gold-soft)}
 const CATS = {
   church:"Church History & Spiritual Upliftment",
   america:"250 Years of America",
-  trip:"Prep for Britain / Scotland Vacation (Pretes)",
   ai:"AI Project",
+  trip:"Prep for Britain / Scotland Trip (Pretes)",
   other:"Other",
   budget:"Budgeting",
   friends:"Recommended by Friends",
@@ -266,14 +273,14 @@ const CATS = {
 };
 const TAB={church:"current",america:"current",trip:"current",ai:"current",other:"current",
   budget:"prior",friends:"prior",classics:"prior",priorch:"prior",family:"prior"};
-const TABCATS={current:["church","america","trip","ai","other"],
+const TABCATS={current:["church","america","ai","trip","other"],
   prior:["budget","friends","classics","priorch","family"]};
 const SACRED = new Set(["church","priorch","family"]);
 const AMERICA = new Set(["america"]);
 
 const B=[
 // ---- Church History & Spiritual ----
-{t:"Saints, Vol. 1: The Standard of Truth (1815–1846)",a:"The Church of Jesus Christ of Latter-day Saints",cat:"church",cr:2,pg:683,age:"13+",audio:true,type:"book"},
+{t:"Saints, Vol. 1: The Standard of Truth (1815–1846)",a:"The Church of Jesus Christ of Latter-day Saints",cat:"church",cr:2,pg:683,age:"13+",audio:true,type:"book",link:"https://www.churchofjesuschrist.org/study/history/saints-v1?lang=eng",linkLabel:"Read in Gospel Library →"},
 {t:"History of the Prophet Joseph, By His Mother",a:"Lucy Mack Smith",cat:"church",cr:1,pg:180,age:"13+",audio:true,type:"book",note:"Preface + ch. 14, 16, 18–54."},
 {t:"In the Hands of the Lord: The Life of Dallin H. Oaks",a:"Richard E. Turley Jr.",cat:"church",cr:1,pg:416,age:"15+",audio:true,type:"book",neu:true},
 {t:"The Priesthood Power of Women",a:"Barbara Morgan Gardner",cat:"church",cr:1,pg:176,age:"15+",audio:true,type:"book",neu:true},
@@ -303,10 +310,10 @@ const B=[
   ["God's Intent Is to Bring You Home","Patrick R. Kearon","Apr 2024"]
 ]},
 {t:"Church History Matters — Podcast (any 10 episodes)",a:"Scripture Central",cat:"church",cr:1,pg:0,age:"13+",audio:true,type:"podcast",note:"Listen to and reflect on any 10 episodes.",link:"https://scripturecentral.org/shows/church-history-matters",linkLabel:"Listen to the podcast →"},
-{t:"Girls Who Choose God: Stories of Strong Women from the Book of Mormon",a:"McArthur Krishna",cat:"church",cr:0.5,pg:48,age:"9+",audio:false,type:"book"},
-{t:"Joseph Smith: Teenage Prophet",a:"Richard Turley",cat:"church",cr:1,pg:77,age:"9+",audio:false,type:"book"},
+{t:"Girls Who Choose God: Stories of Strong Women from the Book of Mormon",a:"McArthur Krishna",cat:"priorch",cr:0.5,pg:48,age:"9+",audio:false,type:"book"},
+{t:"Joseph Smith: Teenage Prophet",a:"Richard Turley",cat:"priorch",cr:1,pg:77,age:"9+",audio:false,type:"book"},
 {t:"Joseph Smith: The Boy… The Prophet",a:"Jay A. Parry",cat:"church",cr:0.5,pg:48,age:"9+",audio:false,type:"book"},
-{t:"The Holy Ghost Is Like a Blanket",a:"Annalisa Hall",cat:"church",cr:0.5,pg:36,age:"All",audio:false,type:"book"},
+{t:"The Holy Ghost Is Like a Blanket",a:"Annalisa Hall",cat:"priorch",cr:0.5,pg:36,age:"All",audio:false,type:"book"},
 {t:"Your Patriarchal Blessing",a:"Brad Wilcox",cat:"church",cr:0.5,pg:32,age:"9+",audio:false,type:"book",neu:true},
 {t:"The Book of Mormon: Another Testament of Jesus Christ",a:"The Church of Jesus Christ of Latter-day Saints",cat:"church",cr:4,pg:531,age:"All",audio:true,type:"book",note:"Counts as 4 books toward the challenge.",link:"https://www.churchofjesuschrist.org/study/scriptures/bofm?lang=eng",linkLabel:"Read in Gospel Library →"},
 // ---- 250 Years of America ----
@@ -341,7 +348,7 @@ const B=[
 {t:"The Indispensable Milton Friedman",a:"Ed. Lanny Ebenstein",cat:"other",sub:"Economics",cr:1,pg:274,age:"15+",audio:true,type:"book"},
 {t:"The Wealth of Nations",a:"Adam Smith",cat:"other",sub:"Economics",cr:1.5,pg:540,age:"15+",audio:true,type:"book"},
 {t:"Freakonomics",a:"Steven Levitt & Stephen Dubner",cat:"other",sub:"Economics",cr:1,pg:352,age:"13+",audio:true,type:"book"},
-{t:"The Tuttle Twins and the Miraculous Pencil",a:"Connor Boyack",cat:"other",sub:"Economics",cr:0.5,pg:60,age:"All",audio:true,type:"book",neu:true},
+{t:"The Tuttle Twins and the Miraculous Pencil",a:"Connor Boyack",cat:"other",sub:"Economics",cr:1,pg:60,age:"9+",audio:true,type:"book",neu:true},
 // ---- Public Policy ----
 {t:"Abundance",a:"Ezra Klein",cat:"other",sub:"Public Policy",cr:1,pg:297,age:"15+",audio:true,type:"book"},
 {t:"The Vision of the Anointed",a:"Thomas Sowell",cat:"other",sub:"Public Policy",cr:1,pg:278,age:"15+",audio:true,type:"book"},
@@ -351,6 +358,9 @@ const B=[
 // ---- Bios ----
 {t:"Elon Musk",a:"Walter Isaacson",cat:"other",sub:"Biography",cr:2,pg:680,age:"15+",audio:true,type:"book",est:true},
 {t:"Long Walk to Freedom",a:"Nelson Mandela",cat:"other",sub:"Biography",cr:2,pg:684,age:"15+",audio:true,type:"book",est:true},
+// ---- Fiction (Other) ----
+{t:"Harry Potter and the Sorcerer's Stone",a:"J. K. Rowling",cat:"other",sub:"Fiction",cr:1,pg:309,age:"9+",audio:true,type:"novel"},
+{t:"Percy Jackson and the Olympians: The Lightning Thief",a:"Rick Riordan",cat:"other",sub:"Fiction",cr:1,pg:377,age:"9+",audio:true,type:"novel"},
 // ---- Friends ----
 {t:"The Warmth of Other Suns",a:"Isabel Wilkerson",cat:"friends",cr:2,pg:673,age:"15+",audio:true,type:"book",est:true},
 {t:"Empire of the Summer Moon",a:"S. C. Gwynne",cat:"friends",cr:1.5,pg:497,age:"15+",audio:true,type:"book",est:true},
@@ -376,7 +386,7 @@ const B=[
 {t:"The Jungle Book",a:"Rudyard Kipling",cat:"classics",cr:0.5,pg:240,age:"9+",audio:true,type:"book"},
 {t:"King Arthur and His Knights of the Round Table",a:"Roger Lancelyn Green",cat:"classics",cr:1.5,pg:352,age:"9+",audio:true,type:"book"},
 {t:"The Adventures of Robin Hood",a:"Roger Lancelyn Green",cat:"classics",cr:1,pg:336,age:"9+",audio:true,type:"book"},
-{t:"To Kill a Mockingbird",a:"Harper Lee",cat:"classics",cr:1,pg:331,age:"13+",audio:true,type:"novel",neu:true},
+{t:"To Kill a Mockingbird",a:"Harper Lee",cat:"other",sub:"Classic",cr:1,pg:331,age:"13+",audio:true,type:"novel",neu:true},
 {t:"The Lion, the Witch and the Wardrobe (Narnia)",a:"C. S. Lewis",cat:"other",sub:"Classic",cr:0.5,pg:206,age:"All",audio:true,type:"novel"},
 {t:"The Call of the Wild",a:"Jack London",cat:"classics",cr:0.5,pg:232,age:"9+",audio:true,type:"novel"},
 {t:"Animal Farm",a:"George Orwell",cat:"classics",cr:0.5,pg:112,age:"13+",audio:true,type:"novel"},
@@ -443,7 +453,7 @@ function chip(container,label,val,cls,onToggle){
 function buildCatChips(){
   el("f-cat").innerHTML="";
   TABCATS[state.tab].forEach(k=>chip(el("f-cat"),CATS[k],k,
-    SACRED.has(k)?"gold":(AMERICA.has(k)?"red":""),(v,on)=>tog(state.cat,v,on)));
+    SACRED.has(k)?"gold":(AMERICA.has(k)?"red":(k==="ai"?"ai":"")),(v,on)=>tog(state.cat,v,on)));
 }
 buildCatChips();
 function switchTab(t){
@@ -492,8 +502,8 @@ function sortList(list){
 }
 function badge(cls,txt){return `<span class="badge ${cls}">${txt}</span>`;}
 function card(b){
-  const sacred=SACRED.has(b.cat),america=AMERICA.has(b.cat);
-  const cls="card"+(sacred?" sacred":"")+(america?" america":"");
+  const sacred=SACRED.has(b.cat),america=AMERICA.has(b.cat),isai=b.cat==="ai";
+  const cls="card"+(sacred?" sacred":"")+(america?" america":"")+(isai?" ai":"");
   const crTxt=(b.est?"~":"")+b.cr+" "+(b.cr===1?"book":"books");
   let badges=badge("b-credit",crTxt);
   if(b.pg>0)badges+=badge("b-pages",b.pg+" pp");
