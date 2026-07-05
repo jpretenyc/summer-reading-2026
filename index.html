@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026 Summer Reading Challenge</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0A1F3D;        /* Old Glory navy */
+  --navy-2:#14294a;
+  --red:#8C2B2E;         /* heritage barn red, muted */
+  --gold:#B08D4F;        /* brass */
+  --gold-soft:#d9c49a;
+  --parch:#F7F3EA;       /* parchment */
+  --parch-2:#efe9db;
+  --card:#FCFAF4;
+  --ink:#1C1A17;
+  --ink-soft:#54514a;
+  --line:#e2dccc;
+  --star:#ffffff;
+  --shadow:0 1px 2px rgba(10,31,61,.05),0 8px 24px rgba(10,31,61,.06);
+  --radius:10px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--parch);color:var(--ink);
+  font-family:"Inter",system-ui,sans-serif;font-size:15px;line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1180px;margin:0 auto;padding:0 22px}
+
+/* ---------- Header ---------- */
+header{
+  background:var(--navy);color:#fff;position:relative;overflow:hidden;
+  border-bottom:3px solid var(--gold);
+}
+header::before{ /* faint star field */
+  content:"";position:absolute;inset:0;opacity:.06;pointer-events:none;
+  background-image:radial-gradient(circle,#fff 1px,transparent 1.4px);
+  background-size:26px 26px;background-position:0 0;
+}
+.stripe-rule{height:4px;width:100%;
+  background:linear-gradient(90deg,var(--red) 0 33.3%,#f4f1e8 33.3% 66.6%,var(--navy-2) 66.6% 100%);
+  opacity:.9}
+.hd{position:relative;padding:26px 0 10px}
+.eyebrow{font-family:"Inter";font-size:11.5px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--gold-soft);font-weight:600;margin:0 0 10px}
+.title{font-family:"Libre Caslon Display",serif;font-weight:400;
+  font-size:clamp(30px,5vw,50px);line-height:1.02;margin:0;letter-spacing:.01em;max-width:76%}
+.title .amp{color:var(--gold-soft)}
+.theme-row{display:flex;justify-content:space-between;align-items:baseline;gap:20px;flex-wrap:wrap;margin-top:12px}
+.theme{font-family:"Libre Caslon Text",serif;font-style:italic;color:#e8e2d4;
+  font-size:clamp(15px,2vw,19px);margin:0;max-width:620px}
+.avail{font-family:"Libre Caslon Text",serif;font-style:italic;color:#e8e2d4;
+  font-size:clamp(15px,2vw,19px);margin:0;text-align:right}
+.edition{position:absolute;top:30px;right:2px;text-align:right;
+  font-family:"Libre Caslon Display",serif;font-size:24px;line-height:1.05;color:#fff}
+.edition span{color:var(--gold-soft);font-size:15px;letter-spacing:.18em;text-transform:uppercase}
+
+/* deadlines strip */
+.dl{display:flex;flex-wrap:wrap;gap:0;margin-top:14px;border-top:1px solid rgba(255,255,255,.14)}
+.dl div{flex:1 1 160px;padding:6px 18px 0 0;border-right:1px solid rgba(255,255,255,.1)}
+.dl div:last-child{border-right:none}
+.dl .k{font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--gold-soft);font-weight:600;line-height:1.2}
+.dl .v{font-family:"Libre Caslon Text",serif;font-size:14px;margin-top:0;color:#fff;line-height:1.2}
+
+/* ---------- Controls ---------- */
+.controls{position:sticky;top:0;z-index:20;background:var(--parch-2);
+  border-bottom:1px solid var(--line);padding:14px 0 12px;box-shadow:0 4px 14px rgba(10,31,61,.04)}
+.tabs{display:flex;gap:26px;margin-bottom:14px;border-bottom:1px solid var(--line)}
+.tab{background:none;border:none;padding:0 0 11px;margin-bottom:-1px;cursor:pointer;
+  font-family:"Libre Caslon Text",serif;font-size:17px;color:var(--ink-soft);
+  border-bottom:2px solid transparent;transition:.13s}
+.tab:hover{color:var(--navy)}
+.tab[aria-selected="true"]{color:var(--navy);border-bottom-color:var(--red)}
+.searchrow{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.search{flex:1 1 260px;position:relative}
+.search input{width:100%;padding:11px 14px 11px 38px;border:1px solid var(--line);
+  border-radius:8px;background:#fff;font-family:"Inter";font-size:14px;color:var(--ink)}
+.search input:focus{outline:2px solid var(--navy);outline-offset:1px;border-color:var(--navy)}
+.search svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);opacity:.4}
+.count{font-family:"Libre Caslon Text",serif;font-style:italic;color:var(--ink-soft);font-size:14px;white-space:nowrap}
+.sortsel{padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:#fff;
+  font-family:"Inter";font-size:13px;color:var(--ink);cursor:pointer}
+.reset{background:none;border:none;color:var(--red);font-family:"Inter";font-size:13px;
+  font-weight:600;cursor:pointer;padding:8px 4px;text-decoration:underline;text-underline-offset:3px}
+.reset:hover{color:var(--navy)}
+
+.filters{margin-top:12px;display:flex;flex-direction:column;gap:9px}
+.frow{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.flabel{font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-soft);
+  font-weight:600;width:78px;flex-shrink:0;padding-top:5px}
+.chips{display:flex;gap:7px;flex-wrap:wrap}
+.chip{border:1px solid var(--line);background:#fff;color:var(--ink-soft);
+  padding:5px 12px;border-radius:99px;font-size:12.5px;font-family:"Inter";font-weight:500;
+  cursor:pointer;transition:.13s;white-space:nowrap}
+.chip:hover{border-color:var(--navy);color:var(--navy)}
+.chip[aria-pressed="true"]{background:var(--navy);color:#fff;border-color:var(--navy)}
+.chip.red[aria-pressed="true"]{background:var(--red);border-color:var(--red)}
+.chip.gold[aria-pressed="true"]{background:var(--gold);border-color:var(--gold);color:#1a1508}
+
+/* ---------- Grid ---------- */
+.req{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--gold);
+  border-radius:8px;padding:12px 16px;margin-bottom:20px;font-family:"Libre Caslon Text",serif;
+  font-size:14.5px;color:var(--ink);line-height:1.45}
+.req strong{font-family:"Inter";font-weight:700;color:var(--navy)}
+main{padding:26px 0 60px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(288px,1fr));gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  padding:16px 16px 14px 18px;position:relative;box-shadow:var(--shadow);
+  border-left:3px solid var(--navy);display:flex;flex-direction:column;transition:.15s}
+.card:hover{transform:translateY(-2px);box-shadow:0 4px 8px rgba(10,31,61,.07),0 14px 30px rgba(10,31,61,.09)}
+.card.sacred{border-left-color:var(--gold);background:linear-gradient(180deg,#fdfbf4,#f9f4e8)}
+.card.america{border-left-color:var(--red)}
+.card .cat{font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-soft);
+  font-weight:600;margin-bottom:6px}
+.card.sacred .cat{color:var(--gold)}
+.card.america .cat{color:var(--red)}
+.bktitle{font-family:"Libre Caslon Text",serif;font-weight:700;font-size:17px;line-height:1.2;
+  margin:0 0 3px;color:var(--ink)}
+.author{font-size:13px;color:var(--ink-soft);margin:0 0 12px}
+.spacer{flex:1}
+.badges{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto}
+.badge{font-size:11px;font-weight:600;font-family:"Inter";padding:3px 8px;border-radius:6px;
+  display:inline-flex;align-items:center;gap:4px;letter-spacing:.01em}
+.b-credit{background:var(--navy);color:#fff}
+.card.sacred .b-credit{background:var(--gold);color:#1a1508}
+.card.america .b-credit{background:var(--red);color:#fff}
+.b-pages{background:#eeeadd;color:var(--ink-soft)}
+.b-age{background:#e7edf5;color:var(--navy)}
+.b-audio{background:#e8f0e8;color:#2f5233}
+.b-new{background:var(--red);color:#fff;letter-spacing:.08em;text-transform:uppercase;font-size:10px}
+.b-type{background:#efe4f0;color:#5a3d5c}
+.pin{position:absolute;top:-9px;right:12px;background:var(--gold);color:#1a1508;
+  font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  padding:3px 9px;border-radius:99px;box-shadow:var(--shadow)}
+.card .cat .sub{color:var(--ink-soft);font-weight:600}
+.card.sacred .cat .sub{color:#9a7f45}
+.talks,.brief{margin-top:10px;font-family:"Inter"}
+.talks summary,.brief summary{font-size:12px;font-weight:600;color:var(--navy);cursor:pointer;list-style:none;
+  display:inline-flex;align-items:center;gap:5px;user-select:none}
+.talks summary::before,.brief summary::before{content:"▸";font-size:10px;transition:transform .15s}
+.talks[open] summary::before,.brief[open] summary::before{transform:rotate(90deg)}
+.card.sacred .talks summary{color:#7a5f24}
+.brief h4{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);
+  margin:12px 0 6px;font-weight:700}
+.brief ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:5px}
+.brief ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:5px;list-style:none}
+.brief ul li::before{content:"✓ ";color:var(--red);font-weight:700}
+.brief li{font-size:12.5px;line-height:1.4;color:var(--ink)}
+.talks ol{margin:10px 0 2px;padding-left:20px;display:flex;flex-direction:column;gap:7px}
+.talks li{font-size:12.5px;line-height:1.35}
+.talks .tt{display:block;color:var(--ink);font-weight:500}
+.talks .tm{display:block;color:var(--ink-soft);font-size:11px}
+.buy{display:inline-flex;align-items:center;gap:4px;margin-top:11px;font-size:12px;
+  font-weight:600;color:var(--navy);text-decoration:none;font-family:"Inter"}
+.buy:hover{color:var(--red);text-decoration:underline;text-underline-offset:2px}
+.card.sacred .buy{color:#7a5f24}.card.sacred .buy:hover{color:var(--red)}
+.rule-note{font-size:11.5px;color:var(--ink-soft);font-style:italic;font-family:"Libre Caslon Text",serif;
+  margin-top:9px}
+
+.empty{text-align:center;padding:70px 20px;color:var(--ink-soft)}
+.empty h3{font-family:"Libre Caslon Display",serif;font-weight:400;font-size:24px;color:var(--navy);margin:0 0 6px}
+
+footer{background:var(--navy);color:#d7d1c4;padding:22px 0;font-size:12.5px;text-align:center;
+  border-top:3px solid var(--gold)}
+footer .stripe-rule{margin-bottom:18px}
+footer a{color:var(--gold-soft)}
+
+@media (max-width:640px){
+  .edition{font-size:19px;top:26px}
+  .flabel{width:100%;padding-top:0}
+  .dl div{flex:1 1 140px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap hd">
+    <div class="edition" aria-hidden="true">America 250<br><span>Edition</span></div>
+    <p class="eyebrow">4th Annual</p>
+    <h1 class="title"><span class="amp">2026</span> Summer Reading Challenge</h1>
+    <div class="theme-row">
+      <p class="theme">Appreciation of history; preparation for the future.</p>
+      <p class="avail">Prepared for the Prete family, but available to all.</p>
+    </div>
+    <div class="dl">
+      <div><div class="k">Accept &amp; Select</div><div class="v">Sun, July 12</div></div>
+      <div><div class="k">Two Books Done</div><div class="v">Sun, Aug 2</div></div>
+      <div><div class="k">Final Deadline</div><div class="v">Sun, Sep 6</div></div>
+      <div><div class="k">Dinner &amp; Awards</div><div class="v">Sun, Sep 27</div></div>
+    </div>
+  </div>
+</header>
+<div class="stripe-rule"></div>
+
+<div class="controls">
+  <div class="wrap">
+    <div class="tabs" role="tablist">
+      <button class="tab" id="tab-current" role="tab" aria-selected="true" type="button">2026 Selections</button>
+      <button class="tab" id="tab-prior" role="tab" aria-selected="false" type="button">Books from Prior Years</button>
+    </div>
+    <div class="searchrow">
+      <div class="search">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <input id="q" type="search" placeholder="Search title or author…" aria-label="Search books">
+      </div>
+      <select id="sort" class="sortsel" aria-label="Sort books">
+        <option value="cat">Sort: By section</option>
+        <option value="title">Title A–Z</option>
+        <option value="pagesUp">Pages: short → long</option>
+        <option value="pagesDown">Pages: long → short</option>
+        <option value="creditUp">Credit: low → high</option>
+        <option value="creditDown">Credit: high → low</option>
+      </select>
+      <span class="count" id="count"></span>
+      <button class="reset" id="reset" type="button">Clear filters</button>
+    </div>
+    <div class="filters">
+      <div class="frow"><span class="flabel">Section</span><div class="chips" id="f-cat"></div></div>
+      <div class="frow"><span class="flabel">Age fit</span><div class="chips" id="f-age"></div></div>
+      <div class="frow"><span class="flabel">Credit</span><div class="chips" id="f-credit"></div></div>
+      <div class="frow"><span class="flabel">Flags</span><div class="chips" id="f-flag"></div></div>
+    </div>
+  </div>
+</div>
+
+<main class="wrap">
+  <div class="req" id="req">Complete <strong>5</strong> in all: <strong>4 books</strong> plus <strong>one AI Project</strong> (required — it counts as your 5th book). At least <strong>1</strong> from Church History &amp; Spiritual Upliftment and <strong>1</strong> from 250 Years of America; the rest from any section. Reach <strong>10 books</strong> and Prete children earn a <strong>$500</strong> bonus.</div>
+  <div class="grid" id="grid"></div>
+  <div class="empty" id="empty" hidden>
+    <h3>No books match those filters.</h3>
+    <p>Loosen a filter or clear them all to see the full list.</p>
+  </div>
+</main>
+
+<footer>
+  <div class="stripe-rule"></div>
+  <div class="wrap">
+    Reward: certificate · honorary dinner · a history-site day trip. &nbsp;·&nbsp;
+    Substitutions welcome with a parent's OK — tell John &amp; Emma. &nbsp;·&nbsp;
+    Prete kids reaching 10 books earn a $500 bonus.
+  </div>
+</footer>
+
+<script>
+/* type: book | talks | podcast | activity | novel
+   sacred:true -> reverent gold treatment. america:true -> red spine.
+   est:true on credit -> shown with ~ (inferred from length). */
+const CATS = {
+  church:"Church History & Spiritual Upliftment",
+  america:"250 Years of America",
+  trip:"Prep for Britain / Scotland Vacation (Pretes)",
+  ai:"AI Project",
+  other:"Other",
+  budget:"Budgeting",
+  friends:"Recommended by Friends",
+  classics:"Classics",
+  priorch:"Church History (Prior Years)",
+  family:"Family History"
+};
+const TAB={church:"current",america:"current",trip:"current",ai:"current",other:"current",
+  budget:"prior",friends:"prior",classics:"prior",priorch:"prior",family:"prior"};
+const TABCATS={current:["church","america","trip","ai","other"],
+  prior:["budget","friends","classics","priorch","family"]};
+const SACRED = new Set(["church","priorch","family"]);
+const AMERICA = new Set(["america"]);
+
+const B=[
+// ---- Church History & Spiritual ----
+{t:"Saints, Vol. 1: The Standard of Truth (1815–1846)",a:"The Church of Jesus Christ of Latter-day Saints",cat:"church",cr:2,pg:683,age:"13+",audio:true,type:"book"},
+{t:"History of the Prophet Joseph, By His Mother",a:"Lucy Mack Smith",cat:"church",cr:1,pg:180,age:"13+",audio:true,type:"book",note:"Preface + ch. 14, 16, 18–54."},
+{t:"In the Hands of the Lord: The Life of Dallin H. Oaks",a:"Richard E. Turley Jr.",cat:"church",cr:1,pg:416,age:"15+",audio:true,type:"book",neu:true},
+{t:"The Priesthood Power of Women",a:"Barbara Morgan Gardner",cat:"church",cr:1,pg:176,age:"15+",audio:true,type:"book",neu:true},
+{t:"Yearning for the Living God",a:"F. Enzio Busche",cat:"church",cr:1,pg:307,age:"15+",audio:true,type:"book",neu:true},
+{t:"The God Who Weeps",a:"Terryl & Fiona Givens",cat:"church",cr:1,pg:160,age:"13+",audio:true,type:"book",neu:true},
+{t:"Investigating the Book of Mormon Witnesses",a:"Richard L. Anderson",cat:"church",cr:1,pg:206,age:"13+",audio:false,type:"book",neu:true},
+{t:"20 Seminal General Conference Talks",a:"Various prophets & leaders",cat:"church",cr:1,pg:0,age:"All",audio:true,type:"talks",note:"Study and reflect — read or watch. Substitutions allowed with a parent's OK.",link:"https://www.churchofjesuschrist.org/study/general-conference?lang=eng",linkLabel:"Read or watch at churchofjesuschrist.org →",talks:[
+  ["We Thank Thee, O God, for a Prophet","Spencer W. Kimball","Oct 1972"],
+  ["The Mediator","Boyd K. Packer","Apr 1977"],
+  ["This Is a Day of Sacrifice","Ezra Taft Benson","Apr 1979"],
+  ["And Peter Went Out and Wept Bitterly","Gordon B. Hinckley","Apr 1979"],
+  ["The Purifying Power of Gethsemane","Bruce R. McConkie","Apr 1985"],
+  ["Beware of Pride","Ezra Taft Benson (read by Gordon B. Hinckley)","Apr 1989"],
+  ["A Prophet's Testimony","Gordon B. Hinckley","Apr 1993"],
+  ["The Touch of the Master's Hand","Boyd K. Packer","Apr 2001"],
+  ["But if Not…","Dennis E. Simmons","Apr 2004"],
+  ["Now Is the Time to Serve a Mission!","Richard G. Scott","Apr 2006"],
+  ["Live According to the Words of the Prophets","Carol F. McConkie","Oct 2014"],
+  ["Revelation for the Church, Revelation for Our Lives","Russell M. Nelson","Apr 2018"],
+  ["For Him","Joy D. Jones","Oct 2018"],
+  ["The Challenge to Become","Dallin H. Oaks","Oct 2020"],
+  ["Fear Not: Believe Only!","Jeffrey R. Holland","Apr 2022"],
+  ["Lifted Up upon the Cross","Jeffrey R. Holland","Oct 2022"],
+  ["Overcome the World and Find Rest","Russell M. Nelson","Oct 2022"],
+  ["Celestial Training in a Telestial World","Sheri L. Dew","BYU Women's Conf. 2023"],
+  ["Motions of a Hidden Fire","Jeffrey R. Holland","Apr 2024"],
+  ["God's Intent Is to Bring You Home","Patrick R. Kearon","Apr 2024"]
+]},
+{t:"Church History Matters — Podcast (any 10 episodes)",a:"Scripture Central",cat:"church",cr:1,pg:0,age:"13+",audio:true,type:"podcast",note:"Listen to and reflect on any 10 episodes.",link:"https://scripturecentral.org/shows/church-history-matters",linkLabel:"Listen to the podcast →"},
+{t:"Girls Who Choose God: Stories of Strong Women from the Book of Mormon",a:"McArthur Krishna",cat:"church",cr:0.5,pg:48,age:"9+",audio:false,type:"book"},
+{t:"Joseph Smith: Teenage Prophet",a:"Richard Turley",cat:"church",cr:1,pg:77,age:"9+",audio:false,type:"book"},
+{t:"Joseph Smith: The Boy… The Prophet",a:"Jay A. Parry",cat:"church",cr:0.5,pg:48,age:"9+",audio:false,type:"book"},
+{t:"The Holy Ghost Is Like a Blanket",a:"Annalisa Hall",cat:"church",cr:0.5,pg:36,age:"All",audio:false,type:"book"},
+{t:"Your Patriarchal Blessing",a:"Brad Wilcox",cat:"church",cr:0.5,pg:32,age:"9+",audio:false,type:"book",neu:true},
+{t:"The Book of Mormon: Another Testament of Jesus Christ",a:"The Church of Jesus Christ of Latter-day Saints",cat:"church",cr:4,pg:531,age:"All",audio:true,type:"book",note:"Counts as 4 books toward the challenge.",link:"https://www.churchofjesuschrist.org/study/scriptures/bofm?lang=eng",linkLabel:"Read in Gospel Library →"},
+// ---- 250 Years of America ----
+{t:"The Idea of America",a:"Gordon S. Wood",cat:"america",cr:1,pg:400,age:"15+",audio:true,type:"book",neu:true},
+{t:"National Treasure: How the Declaration Made America",a:"Michael Auslin",cat:"america",cr:1,pg:368,age:"13+",audio:true,type:"book",neu:true},
+{t:"1776",a:"David McCullough",cat:"america",cr:1,pg:400,age:"13+",audio:true,type:"book",neu:true},
+{t:"Rise to Rebellion",a:"Jeff Shaara",cat:"america",cr:2,pg:576,age:"13+",audio:true,type:"novel",neu:true,est:true},
+{t:"Johnny Tremain",a:"Esther Hoskin Forbes",cat:"america",cr:1,pg:338,age:"9+",audio:true,type:"novel",neu:true},
+{t:"Sophia's War: A Tale of the Revolution",a:"Avi",cat:"america",cr:1,pg:336,age:"9+",audio:true,type:"novel",neu:true},
+{t:"A Kids' Guide to the American Revolution",a:"Kathleen Krull",cat:"america",cr:1,pg:224,age:"All",audio:true,type:"book"},
+{t:"We the People: The Story of Our Constitution",a:"Liz Cheney",cat:"america",cr:0.5,pg:40,age:"9+",audio:false,type:"book",note:"Buy in print — not the Kindle edition."},
+{t:"If You Lived at the Time of the American Revolution",a:"Kay Moore",cat:"america",cr:1,pg:80,age:"9+",audio:false,type:"book"},
+// ---- Trip ----
+{t:"The Splendid and the Vile",a:"Erik Larson",cat:"trip",cr:1,pg:546,age:"13+",audio:true,type:"book",neu:true},
+{t:"Five Days in London, May 1940",a:"John Lukacs",cat:"trip",cr:1,pg:236,age:"15+",audio:true,type:"book",note:"The hinge decision — short and weighty."},
+{t:"The War That Saved My Life",a:"Kimberly Brubaker Bradley",cat:"trip",cr:1,pg:316,age:"9+",audio:true,type:"novel",note:"Blitz-evacuation story; younger readers."},
+{t:"The Secret Life of Bletchley Park",a:"Sinclair McKay",cat:"trip",cr:1,pg:352,age:"13+",audio:true,type:"book",note:"If Bletchley is on the itinerary — this one."},
+// ---- AI ----
+{t:"How AI Will Shape Our Future",a:"Pedro Uria-Recio",cat:"other",sub:"AI",cr:1.5,pg:476,age:"13+",audio:true,type:"book"},
+{t:"Co-Intelligence",a:"Ethan Mollick",cat:"other",sub:"AI",cr:1,pg:253,age:"13+",audio:true,type:"book"},
+{t:"The AI Workshop: Beginner's Guide to AI",a:"Milo Foster",cat:"other",sub:"AI",cr:1,pg:170,age:"13+",audio:false,type:"book"},
+{t:"Build a Storybook with Claude",a:"Hands-on AI project · Claude provided",cat:"ai",cr:0.5,pg:0,age:"9+",audio:false,type:"activity",note:"Team up with Claude to write and illustrate your own short story, then present it to the family.",link:"https://claude.ai/new",linkLabel:"Build it with Claude →",steps:["Pick a hero and a problem they must solve (write one sentence).","Ask Claude to help you write a 6–8 page story with a beginning, middle, and end.","For each page, ask Claude to create a matching picture.","Ask Claude to put it all together as a web page.","<strong>Present it to the family:</strong> read your story aloud and show every page."],rubric:["A live family presentation where you demo your storybook.","A finished story, at least 6 pages, that makes sense start to finish.","One picture on every page.","It opens in a web browser.","You can name one thing Claude got wrong that <em>you</em> fixed."]},
+{t:"Build a Working App with Claude",a:"Hands-on AI project · Claude provided",cat:"ai",cr:1,pg:0,age:"13+",audio:false,type:"activity",note:"Design and build a real web app with Claude — a family trivia game, a scripture quiz, whatever you dream up — improve it, then present it to the family.",link:"https://claude.ai/new",linkLabel:"Build it with Claude →",steps:["Choose one useful thing your app will do, in plain English.","Describe it to Claude and get a first working version.","Test it — find what's broken or clunky.","Ask Claude for 3 specific improvements, then test again.","<strong>Present it to the family:</strong> demo it live and walk them through how you built it."],rubric:["A live family presentation where you demo the app and explain how it works.","It runs in a browser and does its one job well.","You made at least 2 rounds of changes based on testing.","You can explain in a sentence how it works.","You can point to one thing you'd fix next."]},
+{t:"Ship a Tool with Claude (+ Reflection)",a:"Hands-on AI project · Claude provided",cat:"ai",cr:1,pg:0,age:"15+",audio:false,type:"activity",note:"Build and 'ship' something genuinely useful — a study tutor, a budgeting helper — then write a one-page reflection on where AI helped and where it fell short, then present to the family.",link:"https://claude.ai/new",linkLabel:"Build it with Claude →",steps:["Find a real problem worth solving (yours or a family member's).","Scope it with Claude: what's in, what's out, what 'done' means.","Build a first version, then have a real person use it.","Iterate at least 3 times based on what you learn.","Write a one-page reflection on the experience.","<strong>Present it to the family:</strong> demo the tool and share what you learned."],rubric:["A live family presentation where you demo the tool and share what you learned.","A working tool a real person actually used.","Evidence of 3+ rounds of iteration.","A one-page reflection covering: where AI helped, where it failed, and what you'd do differently.","You can defend one judgment call where you overrode what Claude suggested."]},
+// ---- Budgeting ----
+{t:"Build a Budget Workbook",a:"Guided spreadsheet project · template provided",cat:"budget",cr:1,pg:0,age:"13+",audio:false,type:"activity",note:"US federal, NYC, and three sample households."},
+// ---- Civic ----
+{t:"Review a Landmark Supreme Court Decision",a:"Plus a 500-word essay on the merits",cat:"other",sub:"Civic Education",cr:1,pg:0,age:"15+",audio:false,type:"activity",link:"https://en.wikipedia.org/wiki/List_of_landmark_court_decisions_in_the_United_States",linkLabel:"See the list of landmark cases →"},
+{t:"The Right to Be Wrong",a:"Kevin S. Hasson",cat:"other",sub:"Civic Education",cr:1,pg:192,age:"15+",audio:true,type:"book",neu:true},
+// ---- Economics ----
+{t:"The Road to Serfdom",a:"F. A. Hayek",cat:"other",sub:"Economics",cr:1,pg:296,age:"15+",audio:true,type:"book"},
+{t:"The Indispensable Milton Friedman",a:"Ed. Lanny Ebenstein",cat:"other",sub:"Economics",cr:1,pg:274,age:"15+",audio:true,type:"book"},
+{t:"The Wealth of Nations",a:"Adam Smith",cat:"other",sub:"Economics",cr:1.5,pg:540,age:"15+",audio:true,type:"book"},
+{t:"Freakonomics",a:"Steven Levitt & Stephen Dubner",cat:"other",sub:"Economics",cr:1,pg:352,age:"13+",audio:true,type:"book"},
+{t:"The Tuttle Twins and the Miraculous Pencil",a:"Connor Boyack",cat:"other",sub:"Economics",cr:0.5,pg:60,age:"All",audio:true,type:"book",neu:true},
+// ---- Public Policy ----
+{t:"Abundance",a:"Ezra Klein",cat:"other",sub:"Public Policy",cr:1,pg:297,age:"15+",audio:true,type:"book"},
+{t:"The Vision of the Anointed",a:"Thomas Sowell",cat:"other",sub:"Public Policy",cr:1,pg:278,age:"15+",audio:true,type:"book"},
+// ---- Self ----
+{t:"How to Win Friends and Influence People",a:"Dale Carnegie",cat:"other",sub:"Self-Improvement",cr:1,pg:320,age:"13+",audio:true,type:"book"},
+{t:"Peak: Secrets from the New Science of Expertise",a:"Anders Ericsson",cat:"other",sub:"Self-Improvement",cr:1,pg:339,age:"13+",audio:true,type:"book"},
+// ---- Bios ----
+{t:"Elon Musk",a:"Walter Isaacson",cat:"other",sub:"Biography",cr:2,pg:680,age:"15+",audio:true,type:"book",est:true},
+{t:"Long Walk to Freedom",a:"Nelson Mandela",cat:"other",sub:"Biography",cr:2,pg:684,age:"15+",audio:true,type:"book",est:true},
+// ---- Friends ----
+{t:"The Warmth of Other Suns",a:"Isabel Wilkerson",cat:"friends",cr:2,pg:673,age:"15+",audio:true,type:"book",est:true},
+{t:"Empire of the Summer Moon",a:"S. C. Gwynne",cat:"friends",cr:1.5,pg:497,age:"15+",audio:true,type:"book",est:true},
+{t:"The Anxious Generation",a:"Jonathan Haidt",cat:"friends",cr:1.5,pg:395,age:"13+",audio:true,type:"book",est:true},
+{t:"Here Is New York",a:"E. B. White",cat:"friends",cr:0.5,pg:59,age:"13+",audio:false,type:"book"},
+{t:"The Shell Seekers",a:"Rosamunde Pilcher",cat:"friends",cr:2,pg:654,age:"15+",audio:true,type:"book",est:true},
+// ---- Classics ----
+{t:"The Human Condition",a:"Hannah Arendt",cat:"classics",cr:1,pg:349,age:"15+",audio:true,type:"book"},
+{t:"Confessions",a:"St. Augustine",cat:"classics",cr:1,pg:343,age:"15+",audio:true,type:"book"},
+{t:"Orthodoxy",a:"G. K. Chesterton",cat:"classics",cr:0.5,pg:154,age:"15+",audio:true,type:"book"},
+{t:"The Everlasting Man",a:"G. K. Chesterton",cat:"classics",cr:1,pg:291,age:"15+",audio:true,type:"book"},
+{t:"D'Aulaire's Book of Greek Myths",a:"Ingri & Edgar d'Aulaire",cat:"classics",cr:0.5,pg:208,age:"All",audio:true,type:"book"},
+{t:"Robinson Crusoe",a:"Daniel Defoe",cat:"classics",cr:1,pg:320,age:"9+",audio:true,type:"novel"},
+{t:"Great Expectations",a:"Charles Dickens",cat:"classics",cr:2,pg:505,age:"13+",audio:true,type:"novel"},
+{t:"A Tale of Two Cities",a:"Charles Dickens",cat:"classics",cr:1.5,pg:489,age:"13+",audio:true,type:"novel"},
+{t:"Narrative of the Life of Frederick Douglass",a:"Frederick Douglass",cat:"classics",cr:0.5,pg:176,age:"13+",audio:true,type:"book"},
+{t:"My Side of the Mountain",a:"Jean Craighead George",cat:"classics",cr:0.5,pg:177,age:"9+",audio:true,type:"novel"},
+{t:"The Wind in the Willows",a:"Kenneth Grahame",cat:"classics",cr:1,pg:256,age:"All",audio:true,type:"novel"},
+{t:"Greek Gods and Heroes",a:"Robert Graves",cat:"classics",cr:0.5,pg:160,age:"9+",audio:true,type:"book"},
+{t:"The Iliad",a:"Homer",cat:"classics",cr:2,pg:560,age:"15+",audio:true,type:"book"},
+{t:"The Odyssey",a:"Homer",cat:"classics",cr:1.5,pg:374,age:"15+",audio:true,type:"book"},
+{t:"Just So Stories",a:"Rudyard Kipling",cat:"classics",cr:1,pg:256,age:"All",audio:true,type:"book"},
+{t:"The Jungle Book",a:"Rudyard Kipling",cat:"classics",cr:0.5,pg:240,age:"9+",audio:true,type:"book"},
+{t:"King Arthur and His Knights of the Round Table",a:"Roger Lancelyn Green",cat:"classics",cr:1.5,pg:352,age:"9+",audio:true,type:"book"},
+{t:"The Adventures of Robin Hood",a:"Roger Lancelyn Green",cat:"classics",cr:1,pg:336,age:"9+",audio:true,type:"book"},
+{t:"To Kill a Mockingbird",a:"Harper Lee",cat:"classics",cr:1,pg:331,age:"13+",audio:true,type:"novel",neu:true},
+{t:"The Lion, the Witch and the Wardrobe (Narnia)",a:"C. S. Lewis",cat:"other",sub:"Classic",cr:0.5,pg:206,age:"All",audio:true,type:"novel"},
+{t:"The Call of the Wild",a:"Jack London",cat:"classics",cr:0.5,pg:232,age:"9+",audio:true,type:"novel"},
+{t:"Animal Farm",a:"George Orwell",cat:"classics",cr:0.5,pg:112,age:"13+",audio:true,type:"novel"},
+{t:"1984",a:"George Orwell",cat:"classics",cr:1,pg:328,age:"15+",audio:true,type:"novel"},
+{t:"Perrault's Fairy Tales (Dover ill.)",a:"Charles Perrault",cat:"classics",cr:0.5,pg:96,age:"All",audio:true,type:"book"},
+{t:"Collected Stories and Poems",a:"Edgar Allan Poe",cat:"classics",cr:2,pg:1040,age:"13+",audio:true,type:"book"},
+{t:"Of Mice and Men",a:"John Steinbeck",cat:"classics",cr:0.5,pg:103,age:"13+",audio:true,type:"novel"},
+{t:"Travels with Charley",a:"John Steinbeck",cat:"classics",cr:1,pg:277,age:"13+",audio:true,type:"book"},
+{t:"Treasure Island",a:"Robert Louis Stevenson",cat:"other",sub:"Classic",cr:0.5,pg:240,age:"9+",audio:true,type:"novel"},
+{t:"The Strange Case of Dr. Jekyll and Mr. Hyde",a:"Robert Louis Stevenson",cat:"classics",cr:0.5,pg:144,age:"13+",audio:true,type:"novel"},
+{t:"The Hobbit",a:"J. R. R. Tolkien",cat:"other",sub:"Classic",cr:1,pg:310,age:"9+",audio:true,type:"novel"},
+{t:"The Fellowship of the Ring",a:"J. R. R. Tolkien",cat:"classics",cr:1.5,pg:423,age:"9+",audio:true,type:"novel"},
+{t:"The Prince and the Pauper",a:"Mark Twain",cat:"classics",cr:0.5,pg:240,age:"9+",audio:true,type:"novel"},
+{t:"Around the World in Eighty Days",a:"Jules Verne",cat:"classics",cr:0.5,pg:228,age:"9+",audio:true,type:"novel"},
+{t:"The War of the Worlds",a:"H. G. Wells",cat:"classics",cr:0.5,pg:192,age:"13+",audio:true,type:"novel"},
+{t:"The Time Machine",a:"H. G. Wells",cat:"classics",cr:0.5,pg:118,age:"13+",audio:true,type:"novel"},
+{t:"The Once and Future King",a:"T. H. White",cat:"classics",cr:2,pg:677,age:"13+",audio:true,type:"novel"},
+{t:"Charlotte's Web",a:"E. B. White",cat:"other",sub:"Classic",cr:1,pg:260,age:"9+",audio:true,type:"novel"},
+{t:"The Boxcar Children",a:"Gertrude Chandler Warner",cat:"classics",cr:0.5,pg:154,age:"9+",audio:true,type:"novel",est:true},
+{t:"The Wonderful Wizard of Oz",a:"L. Frank Baum",cat:"classics",cr:0.5,pg:154,age:"All",audio:true,type:"novel",est:true},
+{t:"Peter Pan",a:"J. M. Barrie",cat:"classics",cr:0.5,pg:208,age:"9+",audio:true,type:"novel",est:true},
+{t:"Ramona Quimby, Age 8",a:"Beverly Cleary",cat:"classics",cr:0.5,pg:208,age:"9+",audio:true,type:"novel",est:true},
+{t:"Little House in the Big Woods",a:"Laura Ingalls Wilder",cat:"classics",cr:0.5,pg:238,age:"All",audio:true,type:"novel",est:true},
+{t:"Pollyanna",a:"Eleanor H. Porter",cat:"classics",cr:1,pg:304,age:"9+",audio:true,type:"novel",est:true},
+{t:"Heidi",a:"Johanna Spyri",cat:"classics",cr:1.5,pg:352,age:"9+",audio:true,type:"novel",est:true},
+{t:"Pippi Longstocking",a:"Astrid Lindgren",cat:"classics",cr:0.5,pg:160,age:"All",audio:true,type:"novel",est:true},
+{t:"The Secret Garden",a:"Frances Hodgson Burnett",cat:"classics",cr:1,pg:331,age:"9+",audio:true,type:"novel",est:true},
+{t:"A Bear Called Paddington",a:"Michael Bond",cat:"classics",cr:0.5,pg:176,age:"All",audio:true,type:"novel",est:true},
+// ---- Prior-year Church History (still eligible) ----
+{t:"Our Heritage: A Brief History of the Church",a:"The Church of Jesus Christ of Latter-day Saints",cat:"priorch",cr:0.5,pg:146,age:"13+",audio:false,type:"book",est:true},
+{t:"Lectures on Faith",a:"Joseph Smith (1835 D&C)",cat:"priorch",cr:0.5,pg:92,age:"15+",audio:true,type:"book",est:true},
+{t:"Joseph Smith: Rough Stone Rolling",a:"Richard Lyman Bushman",cat:"priorch",cr:3,pg:784,age:"15+",audio:true,type:"book"},
+{t:"Mere Christianity",a:"C. S. Lewis",cat:"priorch",cr:1,pg:227,age:"13+",audio:true,type:"book"},
+{t:"The Infinite Atonement",a:"Tad R. Callister",cat:"priorch",cr:1,pg:356,age:"15+",audio:true,type:"book"},
+{t:"Jesus the Christ",a:"James E. Talmage",cat:"priorch",cr:1.5,pg:339,age:"15+",audio:true,type:"book"},
+{t:"No Doubt About It",a:"Sheri Dew",cat:"priorch",cr:1,pg:246,age:"13+",audio:true,type:"book"},
+{t:"Faith Is Not Blind",a:"Bruce C. Hafen",cat:"priorch",cr:1,pg:144,age:"13+",audio:true,type:"book"},
+{t:"The Other Martyr: Insights from the Life of Hyrum Smith",a:"Susan Easton Black",cat:"priorch",cr:1,pg:112,age:"13+",audio:true,type:"book"},
+// ---- Family History (Prete home) ----
+{t:"We Do Not Doubt Our Mothers Knew It",a:"Carma T. Prete",cat:"family",cr:0.5,pg:96,age:"13+",audio:false,type:"book",est:true,note:"Copies available in the Prete home."},
+{t:"Our Noble Heritage",a:"Carma T. Prete",cat:"family",cr:0.5,pg:60,age:"13+",audio:false,type:"book",est:true,note:"Copies available in the Prete home."},
+{t:"Autobiography of Edward Louis Barrett",a:"Edward Barrett",cat:"family",cr:0.5,pg:0,age:"13+",audio:false,type:"book",est:true,note:"Physical copy in the Prete home."}
+];
+
+const AGES=["All","9+","13+","15+"];
+const CREDITS=[0.5,1,1.5,2];
+const FLAGS=[["neu","New this year"],["audio","Audio available"]];
+const TYPELABEL={talks:"Talks",podcast:"Podcast",activity:"Activity"};
+
+const NOLINK=new Set(["Build a Budget Workbook",
+  "We Do Not Doubt Our Mothers Knew It","Our Noble Heritage","Autobiography of Edward Louis Barrett"]);
+const state={tab:"current",q:"",cat:new Set(),age:new Set(),cr:new Set(),flag:new Set(),sort:"cat"};
+const el=id=>document.getElementById(id);
+
+function chip(container,label,val,cls,onToggle){
+  const b=document.createElement("button");
+  b.className="chip"+(cls?" "+cls:"");b.type="button";b.textContent=label;
+  b.setAttribute("aria-pressed","false");
+  b.onclick=()=>{const on=b.getAttribute("aria-pressed")==="true";
+    b.setAttribute("aria-pressed",String(!on));onToggle(val,!on);render();};
+  container.appendChild(b);return b;
+}
+// build chips
+function buildCatChips(){
+  el("f-cat").innerHTML="";
+  TABCATS[state.tab].forEach(k=>chip(el("f-cat"),CATS[k],k,
+    SACRED.has(k)?"gold":(AMERICA.has(k)?"red":""),(v,on)=>tog(state.cat,v,on)));
+}
+buildCatChips();
+function switchTab(t){
+  if(state.tab===t)return;
+  state.tab=t;state.cat.clear();
+  el("tab-current").setAttribute("aria-selected",String(t==="current"));
+  el("tab-prior").setAttribute("aria-selected",String(t==="prior"));
+  buildCatChips();render();
+}
+el("tab-current").onclick=()=>switchTab("current");
+el("tab-prior").onclick=()=>switchTab("prior");
+AGES.forEach(a=>chip(el("f-age"),a,a,"",(v,on)=>tog(state.age,v,on)));
+CREDITS.forEach(c=>chip(el("f-credit"),(c===2?"2+ books":c+(c===1?" book":" books")),c,"",(v,on)=>tog(state.cr,v,on)));
+FLAGS.forEach(([k,l])=>chip(el("f-flag"),l,k,k==="neu"?"red":"gold",(v,on)=>tog(state.flag,v,on)));
+function tog(set,v,on){on?set.add(v):set.delete(v);}
+
+el("q").oninput=e=>{state.q=e.target.value.toLowerCase();render();};
+el("sort").onchange=e=>{state.sort=e.target.value;render();};
+el("reset").onclick=()=>{
+  state.q="";state.cat.clear();state.age.clear();state.cr.clear();state.flag.clear();
+  el("q").value="";el("sort").value="cat";state.sort="cat";
+  document.querySelectorAll('.chip[aria-pressed="true"]').forEach(c=>c.setAttribute("aria-pressed","false"));
+  render();
+};
+
+function match(b){
+  if(TAB[b.cat]!==state.tab)return false;
+  if(state.q){const s=(b.t+" "+b.a).toLowerCase();if(!s.includes(state.q))return false;}
+  if(state.cat.size&&!state.cat.has(b.cat))return false;
+  if(state.age.size&&!state.age.has(b.age))return false;
+  if(state.cr.size&&![...state.cr].some(c=>c===2?b.cr>=2:b.cr===c))return false;
+  if(state.flag.size){for(const f of state.flag){if(!b[f])return false;}}
+  return true;
+}
+const catOrder=Object.keys(CATS);
+B.forEach((b,i)=>b._i=i);
+function sortList(list){
+  const s=state.sort;const c=[...list];
+  if(s==="title")c.sort((a,b)=>a.t.localeCompare(b.t));
+  else if(s==="pagesUp")c.sort((a,b)=>a.pg-b.pg);
+  else if(s==="pagesDown")c.sort((a,b)=>b.pg-a.pg);
+  else if(s==="creditUp")c.sort((a,b)=>a.cr-b.cr);
+  else if(s==="creditDown")c.sort((a,b)=>b.cr-a.cr);
+  else c.sort((a,b)=>catOrder.indexOf(a.cat)-catOrder.indexOf(b.cat)||(a.sub||"").localeCompare(b.sub||"")||a._i-b._i);
+  return c;
+}
+function badge(cls,txt){return `<span class="badge ${cls}">${txt}</span>`;}
+function card(b){
+  const sacred=SACRED.has(b.cat),america=AMERICA.has(b.cat);
+  const cls="card"+(sacred?" sacred":"")+(america?" america":"");
+  const crTxt=(b.est?"~":"")+b.cr+" "+(b.cr===1?"book":"books");
+  let badges=badge("b-credit",crTxt);
+  if(b.pg>0)badges+=badge("b-pages",b.pg+" pp");
+  badges+=badge("b-age",b.age);
+  if(b.audio)badges+=badge("b-audio","♪ Audio");
+  if(TYPELABEL[b.type])badges+=badge("b-type",TYPELABEL[b.type]);
+  if(b.neu)badges+=badge("b-new","New");
+  const note=b.note?`<div class="rule-note">${b.note}</div>`:"";
+  const eyebrow=CATS[b.cat]+(b.sub?` <span class="sub">· ${b.sub}</span>`:"");
+  const q=encodeURIComponent(b.t+" "+b.a.split("·")[0].split("/")[0]);
+  let buy="";
+  if(b.link)buy=`<a class="buy" href="${b.link}" target="_blank" rel="noopener">${b.linkLabel||"Open →"}</a>`;
+  else if(!NOLINK.has(b.t))buy=`<a class="buy" href="https://www.amazon.com/s?k=${q}" target="_blank" rel="noopener">Find on Amazon →</a>`;
+  let talks="";
+  if(b.talks){talks=`<details class="talks"><summary>View the 20 talks</summary><ol>`+
+    b.talks.map(x=>`<li><span class="tt">${x[0]}</span><span class="tm">${x[1]} · ${x[2]}</span></li>`).join("")+
+    `</ol></details>`;}
+  let brief="";
+  if(b.steps){brief=`<details class="brief"><summary>View the brief</summary>`+
+    `<h4>How to do it</h4><ol>`+b.steps.map(x=>`<li>${x}</li>`).join("")+`</ol>`+
+    `<h4>What success looks like</h4><ul>`+b.rubric.map(x=>`<li>${x}</li>`).join("")+`</ul></details>`;}
+  return `<article class="${cls}">
+    <div class="cat">${eyebrow}</div>
+    <h3 class="bktitle">${b.t}</h3>
+    <p class="author">${b.a}</p>
+    ${note}${talks}${brief}${buy}<div class="spacer"></div>
+    <div class="badges">${badges}</div>
+  </article>`;
+}
+function render(){
+  const list=sortList(B.filter(match));
+  el("grid").innerHTML=list.map(card).join("");
+  const tabTotal=B.filter(x=>TAB[x.cat]===state.tab).length;
+  el("count").textContent=`Showing ${list.length} of ${tabTotal}`;
+  el("empty").hidden=list.length>0;
+  el("req").style.display=state.tab==="current"?"block":"none";
+  el("grid").style.display=list.length?"grid":"none";
+}
+render();
+</script>
+</body>
+</html>
