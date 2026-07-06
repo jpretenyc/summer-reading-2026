@@ -127,6 +127,10 @@ main{padding:26px 0 60px}
 .bktitle{font-family:"Libre Caslon Text",serif;font-weight:700;font-size:17px;line-height:1.2;
   margin:0 0 3px;color:var(--ink)}
 .author{font-size:13px;color:var(--ink-soft);margin:0 0 12px}
+.cardmain{display:flex;gap:12px;align-items:flex-start}
+.cardtext{flex:1 1 auto;min-width:0}
+.cover{flex:0 0 auto;width:58px;height:auto;border-radius:4px;
+  box-shadow:0 2px 6px rgba(10,31,61,.18);border:1px solid #d8d2c2;background:#fff;margin-top:2px}
 .spacer{flex:1}
 .badges{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto}
 .badge{font-size:11px;font-weight:600;font-family:"Inter";padding:3px 8px;border-radius:6px;
@@ -344,7 +348,7 @@ const B=[
 {t:"Review a Landmark Supreme Court Decision",a:"Plus a 500-word essay on the merits",cat:"other",sub:"Civic Education",cr:1,pg:0,age:"15+",audio:false,type:"activity",link:"https://en.wikipedia.org/wiki/List_of_landmark_court_decisions_in_the_United_States",linkLabel:"See the list of landmark cases →"},
 {t:"The Right to Be Wrong",a:"Kevin S. Hasson",cat:"other",sub:"Civic Education",cr:1,pg:192,age:"15+",audio:true,type:"book",neu:true},
 // ---- Economics ----
-{t:"Basic Economics",a:"Thomas Sowell",cat:"other",sub:"Economics",cr:2,pg:704,age:"15+",audio:true,type:"book"},
+{t:"Basic Economics",a:"Thomas Sowell",cat:"other",sub:"Economics",cr:2,pg:704,age:"15+",audio:true,type:"book",neu:true},
 {t:"The Indispensable Milton Friedman",a:"Ed. Lanny Ebenstein",cat:"other",sub:"Economics",cr:1,pg:274,age:"15+",audio:true,type:"book"},
 {t:"The Wealth of Nations",a:"Adam Smith",cat:"other",sub:"Economics",cr:1.5,pg:540,age:"15+",audio:true,type:"book"},
 {t:"Freakonomics",a:"Steven Levitt & Stephen Dubner",cat:"other",sub:"Economics",cr:1,pg:352,age:"13+",audio:true,type:"book"},
@@ -432,6 +436,51 @@ const B=[
 {t:"Autobiography of Edward Louis Barrett",a:"Edward Barrett",cat:"family",cr:0.5,pg:0,age:"13+",audio:false,type:"book",est:true,note:"Physical copy in the Prete home."}
 ];
 
+const COVERS={
+"Girls Who Choose God: Stories of Strong Women from the Book of Mormon":"https://covers.openlibrary.org/b/id/8935653-M.jpg",
+"Joseph Smith: Teenage Prophet":"https://covers.openlibrary.org/b/id/14072282-M.jpg",
+"Joseph Smith: The Boy… The Prophet":"https://covers.openlibrary.org/b/id/11479869-M.jpg",
+"The Holy Ghost Is Like a Blanket":"https://covers.openlibrary.org/b/id/10896607-M.jpg",
+"The Book of Mormon: Another Testament of Jesus Christ":"https://covers.openlibrary.org/b/id/11293185-M.jpg",
+"Johnny Tremain":"https://covers.openlibrary.org/b/id/282869-M.jpg",
+"Sophia's War: A Tale of the Revolution":"https://covers.openlibrary.org/b/id/8391375-M.jpg",
+"A Kids' Guide to the American Revolution":"https://covers.openlibrary.org/b/id/8814441-M.jpg",
+"We the People: The Story of Our Constitution":"https://covers.openlibrary.org/b/id/7230485-M.jpg",
+"If You Lived at the Time of the American Revolution":"https://covers.openlibrary.org/b/id/385333-M.jpg",
+"The War That Saved My Life":"https://covers.openlibrary.org/b/id/7410332-M.jpg",
+"The Tuttle Twins and the Miraculous Pencil":"https://covers.openlibrary.org/b/id/10891418-M.jpg",
+"Harry Potter and the Sorcerer's Stone":"https://covers.openlibrary.org/b/id/276518-M.jpg",
+"Percy Jackson and the Olympians: The Lightning Thief":"https://covers.openlibrary.org/b/id/15110536-M.jpg",
+"D'Aulaire's Book of Greek Myths":"https://covers.openlibrary.org/b/id/10692832-M.jpg",
+"Robinson Crusoe":"https://covers.openlibrary.org/b/id/368541-M.jpg",
+"My Side of the Mountain":"https://covers.openlibrary.org/b/id/108669-M.jpg",
+"The Wind in the Willows":"https://covers.openlibrary.org/b/id/13335427-M.jpg",
+"Greek Gods and Heroes":"https://covers.openlibrary.org/b/id/6795055-M.jpg",
+"Just So Stories":"https://covers.openlibrary.org/b/id/36215-M.jpg",
+"The Jungle Book":"https://covers.openlibrary.org/b/id/3344204-M.jpg",
+"King Arthur and His Knights of the Round Table":"https://covers.openlibrary.org/b/id/106317-M.jpg",
+"The Adventures of Robin Hood":"https://covers.openlibrary.org/b/id/418176-M.jpg",
+"The Lion, the Witch and the Wardrobe (Narnia)":"https://covers.openlibrary.org/b/id/8441376-M.jpg",
+"The Call of the Wild":"https://covers.openlibrary.org/b/id/12393037-M.jpg",
+"Perrault's Fairy Tales (Dover ill.)":"https://covers.openlibrary.org/b/id/12710295-M.jpg",
+"Treasure Island":"https://covers.openlibrary.org/b/id/13859660-M.jpg",
+"The Hobbit":"https://covers.openlibrary.org/b/id/14627509-M.jpg",
+"The Fellowship of the Ring":"https://covers.openlibrary.org/b/id/14627060-M.jpg",
+"The Prince and the Pauper":"https://covers.openlibrary.org/b/id/8221267-M.jpg",
+"Around the World in Eighty Days":"https://covers.openlibrary.org/b/id/11531296-M.jpg",
+"Charlotte's Web":"https://covers.openlibrary.org/b/id/8461797-M.jpg",
+"The Boxcar Children":"https://covers.openlibrary.org/b/id/11349395-M.jpg",
+"The Wonderful Wizard of Oz":"https://covers.openlibrary.org/b/id/552443-M.jpg",
+"Peter Pan":"https://covers.openlibrary.org/b/id/8237052-M.jpg",
+"Ramona Quimby, Age 8":"https://covers.openlibrary.org/b/id/15064600-M.jpg",
+"Little House in the Big Woods":"https://covers.openlibrary.org/b/id/28677-M.jpg",
+"Pollyanna":"https://covers.openlibrary.org/b/id/902113-M.jpg",
+"Heidi":"https://covers.openlibrary.org/b/id/2668686-M.jpg",
+"Pippi Longstocking":"https://covers.openlibrary.org/b/id/12391198-M.jpg",
+"The Secret Garden":"https://covers.openlibrary.org/b/id/12622062-M.jpg",
+"A Bear Called Paddington":"https://covers.openlibrary.org/b/id/6381303-M.jpg"
+};
+
 const AGES=["All","9+","13+","15+"];
 const CREDITS=[0.5,1,1.5,2];
 const FLAGS=[["neu","New this year"],["audio","Audio available"]];
@@ -505,6 +554,7 @@ function badge(cls,txt){return `<span class="badge ${cls}">${txt}</span>`;}
 function card(b){
   const sacred=SACRED.has(b.cat),america=AMERICA.has(b.cat),isai=b.cat==="ai";
   const cls="card"+(sacred?" sacred":"")+(america?" america":"")+(isai?" ai":"");
+  const cov=(COVERS[b.t]&&(b.age==="All"||b.age==="9+"))?`<img class="cover" src="${COVERS[b.t]}" alt="Cover of ${b.t}" loading="lazy" onerror="this.remove()">`:"";
   const crTxt=(b.est?"~":"")+b.cr+" "+(b.cr===1?"book":"books");
   let badges=badge("b-credit",crTxt);
   if(b.pg>0)badges+=badge("b-pages",b.pg+" pp");
@@ -527,10 +577,16 @@ function card(b){
     `<h4>How to do it</h4><ol>`+b.steps.map(x=>`<li>${x}</li>`).join("")+`</ol>`+
     `<h4>What success looks like</h4><ul>`+b.rubric.map(x=>`<li>${x}</li>`).join("")+`</ul></details>`;}
   return `<article class="${cls}">
-    <div class="cat">${eyebrow}</div>
-    <h3 class="bktitle">${b.t}</h3>
-    <p class="author">${b.a}</p>
-    ${note}${talks}${brief}${buy}<div class="spacer"></div>
+    <div class="cardmain">
+      <div class="cardtext">
+        <div class="cat">${eyebrow}</div>
+        <h3 class="bktitle">${b.t}</h3>
+        <p class="author">${b.a}</p>
+        ${note}${talks}${brief}${buy}
+      </div>
+      ${cov}
+    </div>
+    <div class="spacer"></div>
     <div class="badges">${badges}</div>
   </article>`;
 }
