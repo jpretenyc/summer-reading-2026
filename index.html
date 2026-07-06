@@ -268,6 +268,7 @@ const CATS = {
   america:"250 Years of America",
   ai:"AI Project",
   trip:"Prep for Britain / Scotland Trip (Pretes)",
+  mission:"Mission Prep",
   other:"Other",
   budget:"Budgeting",
   friends:"Recommended by Friends",
@@ -275,11 +276,11 @@ const CATS = {
   priorch:"Church History (Prior Years)",
   family:"Family History"
 };
-const TAB={church:"current",america:"current",trip:"current",ai:"current",other:"current",
+const TAB={church:"current",america:"current",trip:"current",ai:"current",mission:"current",other:"current",
   budget:"prior",friends:"prior",classics:"prior",priorch:"prior",family:"prior"};
-const TABCATS={current:["church","america","ai","trip","other"],
+const TABCATS={current:["church","america","ai","trip","mission","other"],
   prior:["budget","friends","classics","priorch","family"]};
-const SACRED = new Set(["church","priorch","family"]);
+const SACRED = new Set(["church","priorch","family","mission"]);
 const AMERICA = new Set(["america"]);
 
 const B=[
@@ -425,8 +426,10 @@ const B=[
 {t:"Lectures on Faith",a:"Joseph Smith (1835 D&C)",cat:"priorch",cr:0.5,pg:92,age:"15+",audio:true,type:"book",est:true},
 {t:"Joseph Smith: Rough Stone Rolling",a:"Richard Lyman Bushman",cat:"priorch",cr:3,pg:784,age:"15+",audio:true,type:"book"},
 {t:"Mere Christianity",a:"C. S. Lewis",cat:"priorch",cr:1,pg:227,age:"13+",audio:true,type:"book"},
-{t:"The Infinite Atonement",a:"Tad R. Callister",cat:"priorch",cr:1,pg:356,age:"15+",audio:true,type:"book"},
-{t:"Jesus the Christ",a:"James E. Talmage",cat:"priorch",cr:1.5,pg:339,age:"15+",audio:true,type:"book"},
+{t:"The Infinite Atonement",a:"Tad R. Callister",cat:"mission",cr:1,pg:356,age:"15+",audio:true,type:"book"},
+{t:"Jesus the Christ",a:"James E. Talmage",cat:"mission",cr:1.5,pg:339,age:"15+",audio:true,type:"book"},
+{t:"A Marvellous Work and a Wonder",a:"LeGrand Richards",cat:"mission",cr:1.5,pg:424,age:"15+",audio:true,type:"book"},
+{t:"Believing Christ",a:"Stephen E. Robinson",cat:"mission",cr:1,pg:144,age:"13+",audio:true,type:"book"},
 {t:"No Doubt About It",a:"Sheri Dew",cat:"priorch",cr:1,pg:246,age:"13+",audio:true,type:"book"},
 {t:"Faith Is Not Blind",a:"Bruce C. Hafen",cat:"priorch",cr:1,pg:144,age:"13+",audio:true,type:"book"},
 {t:"The Other Martyr: Insights from the Life of Hyrum Smith",a:"Susan Easton Black",cat:"priorch",cr:1,pg:112,age:"13+",audio:true,type:"book"},
